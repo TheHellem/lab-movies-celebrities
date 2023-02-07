@@ -17,7 +17,6 @@ router.post("/movies/create", (req, res, next) => {
 
   Movie.create({ title, genre, plot, cast })
     .then((createdMovie) => {
-      console.log(createdMovie);
       res.redirect("/movies");
     })
     .catch((err) => {
@@ -29,13 +28,10 @@ router.post("/movies/create", (req, res, next) => {
 router.get("/movies", (req, res, next) => {
   Movie.find()
     .then((moviesFromDB) => {
-      console.log(moviesFromDB);
       res.render("movies/movies", { movies: moviesFromDB });
     })
     .catch((err) => next(err));
 });
-
-
 
 router.get("/movies/:id", (req, res, next) => {
   const movieId = req.params.id;
@@ -43,21 +39,41 @@ router.get("/movies/:id", (req, res, next) => {
   Movie.findById(movieId)
     .populate("cast")
     .then((moviesFromDB) => {
-      console.log(moviesFromDB);
-      res.render("movies/movie-details", {movie : moviesFromDB});
+      res.render("movies/movie-details", { movie: moviesFromDB });
     })
-    .catch(err => next(err))
+    .catch((err) => next(err));
 });
-
 
 router.get("/movies/:id/delete", (req, res, next) => {
   Movie.findByIdAndDelete(req.params.id)
-  .then(() => {
-    res.redirect("/movies")
+    .then(() => {
+      res.redirect("movies");
+    })
+    .catch((err) => next(err));
+});
+
+router.get("/movies/edit/:id", (req, res, next) => {
+  Movie.findById(req.params.id)
+    .populate("cast")
+    .then((movieFromDB) => {
+      res.render("movies/edit-movie", { movie: movieFromDB });
+    })
+    .catch((err) => next(err));
+});
+
+router.post("/movies/edit/:id", (req, res, next) => {
+  const { title, genre, plot, cast } = req.body;
+  console.log("Test log:", req.body);
+  Movie.findByIdAndUpdate(req.params.id, {
+    title,
+    genre,
+    plot,
+    cast,
   })
-  .catch(err => next(err))
-})
-
-
+    .then(() => {
+      res.redirect(`movie/${req.params.id}`);
+    })
+    .catch((err) => next(err));
+});
 
 module.exports = router;
