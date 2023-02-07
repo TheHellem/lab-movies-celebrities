@@ -35,6 +35,8 @@ router.get("/movies", (req, res, next) => {
     .catch((err) => next(err));
 });
 
+
+
 router.get("/movies/:id", (req, res, next) => {
   const movieId = req.params.id;
 
@@ -46,6 +48,16 @@ router.get("/movies/:id", (req, res, next) => {
     })
     .catch(err => next(err))
 });
+
+
+router.get("/movies/:id/delete", (req, res, next) => {
+  Movie.findByIdAndDelete(req.params.id)
+  .then(() => {
+    res.redirect("/movies")
+  })
+  .catch(err => next(err))
+})
+
 
 
 module.exports = router;

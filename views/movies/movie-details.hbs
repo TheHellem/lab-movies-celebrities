@@ -10,5 +10,10 @@
     <p>{{occupation}}</p>
     <p>{{catchPhrase}}</p>
 {{/each}}
+
+<form action="/movies/{{movie._id}}/delete">
+<button type="submit">Delete movie?</button>
+</form>
+
 {{/if}}
 <a href="/">HOME!</a>
