@@ -18,22 +18,34 @@ router.post("/movies/create", (req, res, next) => {
   Movie.create({ title, genre, plot, cast })
     .then((createdMovie) => {
       console.log(createdMovie);
-      res.redirect(`movies`);
+      res.redirect("/movies");
     })
     .catch((err) => {
-      res.redirect("movies/new-movie");
+      res.redirect("/movies");
       next(err);
     });
 });
 
-  
-  router.get("/movies", (req, res, next) => {
-    Movie.find()
-      .then((moviesFromDB) => {
-        console.log(moviesFromDB);
-        res.render("movies/movies", { celebrities: moviesFromDB });
-      })
-      .catch((err) => next(err));
-  });
+router.get("/movies", (req, res, next) => {
+  Movie.find()
+    .then((moviesFromDB) => {
+      console.log(moviesFromDB);
+      res.render("movies/movies", { movies: moviesFromDB });
+    })
+    .catch((err) => next(err));
+});
+
+router.get("/movies/:id", (req, res, next) => {
+  const movieId = req.params.id;
+
+  Movie.findById(movieId)
+    .populate("cast")
+    .then((moviesFromDB) => {
+      console.log(moviesFromDB);
+      res.render("movies/movie-details", {movie : moviesFromDB});
+    })
+    .catch(err => next(err))
+});
+
 
 module.exports = router;

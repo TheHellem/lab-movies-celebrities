@@ -1,0 +1,14 @@
+<h2>Movie Details</h2>
+{{#if movie}}
+<h3>{{movie.title}}</h3>
+<p>{{movie.genre}}</p>
+<p>{{movie.plot}}</p>
+
+<h3>Celebrities in movie:</h3>
+{{#each movie.cast}}
+    <p>{{name}}</p>
+    <p>{{occupation}}</p>
+    <p>{{catchPhrase}}</p>
+{{/each}}
+{{/if}}
+<a href="/">HOME!</a>

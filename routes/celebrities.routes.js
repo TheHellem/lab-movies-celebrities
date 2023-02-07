@@ -16,7 +16,7 @@ router.post("/celebrities/create", (req, res, next) => {
   Celebrity.create({ name, occupation, catchPhrase })
     .then((createdCelebrity) => {
       console.log(createdCelebrity);
-      res.redirect(`celebrities/${createdCelebrity._id}`);
+      res.redirect(`/celebrities`);
     })
     .catch((err) => {
       res.redirect("celebrities/new-celebrity");
@@ -32,5 +32,7 @@ router.get("/celebrities", (req, res, next) => {
     })
     .catch((err) => next(err));
 });
+
+
 
 module.exports = router;
